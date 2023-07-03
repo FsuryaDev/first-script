@@ -1,0 +1,51 @@
+-- Settings
+
+local MeditatingAnimId = "rbxassetid://13859705289"
+local StatName = "Aura"
+local ExpPerSec = 1
+
+-- Vars
+
+local MeditateAnim = Instance.new("Animation")
+MeditateAnim.AnimationId = MeditatingAnimId
+
+local CurrentPlayer = nil
+local Meditating = false
+
+local MeditateModule = {}
+
+function MeditateModule.giveExp(plr)
+	spawn(function()
+		if Meditating and plr ~= nil then
+			plr.leaderstats[StatName].Value += ExpPerSec
+		end
+	end)
+end
+
+spawn(function()
+	while true do
+		wait(1)
+		MeditateModule.giveExp(CurrentPlayer)
+	end
+end)
+
+function MeditateModule.Meditate(plr, state)
+	local char = plr.Character
+	local humanoid = char:FindFirstChild("Humanoid")
+	if not humanoid then return end
+	CurrentPlayer = plr
+	Meditating = state
+
+	if state == true then
+		track = humanoid:LoadAnimation(MeditateAnim)
+		track:Play()
+		humanoid.WalkSpeed = 0
+		humanoid.JumpHeight = 0
+	else
+		humanoid.WalkSpeed = 16
+		humanoid.JumpHeight = 4
+		track:Stop()
+	end
+end
+
+return MeditateModule
