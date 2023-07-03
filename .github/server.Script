@@ -1,0 +1,13 @@
+local RS = game:GetService("ReplicatedStorage")
+local Remotes = RS:WaitForChild("Remotes")
+local Modules = RS:WaitForChild("Modules")
+
+-- Events
+
+local MeditateEvent = Remotes:WaitForChild("Meditate")
+
+-- Modules
+
+local MeditateModule = require(Modules:WaitForChild("MeditateModule"))
+
+MeditateEvent.OnServerEvent:Connect(MeditateModule.Meditate)
