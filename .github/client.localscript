@@ -1,0 +1,27 @@
+local UIS = game:GetService("UserInputService")
+local RS = game:GetService("ReplicatedStorage")
+local Remotes = RS:WaitForChild("Remotes")
+local Players = game:GetService("Players")
+local plr = Players.LocalPlayer
+
+-- Keys
+
+local MeditateKey = Enum.KeyCode.M
+
+-- Events
+
+local MeditateEvent = Remotes:WaitForChild("Meditate")
+
+-- Vars
+
+local Meditating = false
+
+UIS.InputBegan:Connect(function(input)
+	if input.KeyCode == MeditateKey and Meditating == false then
+		MeditateEvent:FireServer(true)
+		Meditating = true
+	elseif input.KeyCode == MeditateKey and Meditating == true then
+		MeditateEvent:FireServer(false)
+		Meditating = false
+	end
+end)
